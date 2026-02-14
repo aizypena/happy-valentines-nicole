@@ -3,13 +3,28 @@ import './App.css'
 
 const EMOJIS = ['🌸', '✨', '⭐', '🦋', '🌈', '🍩', '🎉', '🧁', '🤗', '🫶', '🎊', '🪩']
 
+const LOADING_MSGS = [
+  "Booting up emotional vulnerability...",
+  "Calculating how dramatic to be...",
+  "Loading 47 unread feelings...",
+  "Disabling my pride.exe...",
+  "Consulting the universe real quick...",
+  "Almost ready (just fixing my hair)...",
+]
+
 const ROASTS = [
   "I spent hours coding this instead of just texting you 'happy vday.' You're welcome 🫡",
   "Yes, I coded this. No, I won't fix your laptop 💻",
-  "Don't worry, this isn't a love letter. It's a FRIEND letter 📝",
+  "Don't worry, this isn't a love letter. It's a ✨FRIEND✨ letter 📝",
   "Plot twist: this website cost me more effort than our relationship 😂",
   "I asked ChatGPT for advice and it said 'just be yourself.' Terrible advice as always 🤖",
   "You're reading this because someone (me) is still dramatic 🎭",
+]
+
+const TERMS = [
+  "I agree that she is, in fact, the coolest ex ever",
+  "I acknowledge that this website is peak effort",
+  "I promise not to screenshot this and send it to the group chat (jk do whatever)",
 ]
 
 const QUIZ = [
@@ -17,24 +32,32 @@ const QUIZ = [
     q: "What kind of ex am I? 🤔",
     options: [
       { text: "The annoying one", response: "Rude but... fair 😭" },
-      { text: "The cool one", response: "Finally, some respect 😌" },
-      { text: "The one who made a whole website", response: "Correct! And also maybe a little bit of option A 😅" },
+      { text: "The cool one", response: "Finally, some respect around here 😌" },
+      { text: "The one who made a whole website", response: "Correct! ...and also maybe a little bit of A 😅" },
     ],
   },
   {
-    q: "Why did I make this? 🧐",
+    q: "What's my best quality? ✨",
     options: [
-      { text: "To show off my coding skills", response: "I mean... that's a bonus 💅" },
-      { text: "Because I care about you", response: "Aww you actually picked the sweet one 🥹" },
-      { text: "Both honestly", response: "You know me too well 😌" },
+      { text: "Your sense of humor", response: "Good taste. Subscribe for more 🎤" },
+      { text: "Your loyalty", response: "Okay that actually means a lot 🥹" },
+      { text: "Your audacity to make this website", response: "AUDACITY?! It's called ✨dedication✨ 😤" },
+    ],
+  },
+  {
+    q: "Rate this website so far (be honest) 📊",
+    options: [
+      { text: "11/10 masterpiece", response: "Finally someone with taste 👨‍🍳💋" },
+      { text: "It's... something", response: "I'll take that as a 10 📝" },
+      { text: "You need therapy, not a website", response: "Therapy is expensive. Domains are $12 💀" },
     ],
   },
   {
     q: "Will we always be cool? 🤝",
     options: [
-      { text: "Obviously", response: "Confidence. I like it 😎" },
+      { text: "Obviously", response: "Confidence. I respect it 😎" },
       { text: "Duh", response: "Short and sweet, just like our— nevermind 😂" },
-      { text: "Was that even a question?", response: "All correct answers. I don't make bad quizzes 😎" },
+      { text: "Was that even a question?", response: "All correct. I don't make bad quizzes 💯" },
     ],
   },
 ]
@@ -45,6 +68,8 @@ const PROMISES = [
   { emoji: "🤐", text: "Your secrets are still safe with me" },
   { emoji: "🤝", text: "No matter what — I got you. Always." },
 ]
+
+const STAR_LABELS = ["Terrible", "Meh", "It's okay", "Pretty good", "Masterpiece 🏆"]
 
 function FloatingEmoji({ style, emoji }) {
   return (
@@ -116,14 +141,21 @@ function ConfettiBurst() {
 
 function App() {
   const [emojis, setEmojis] = useState([])
-  const [screen, setScreen] = useState('intro')
+  const [screen, setScreen] = useState('loading')
+  const [loadingMsg, setLoadingMsg] = useState(0)
+  const [loadingDone, setLoadingDone] = useState(false)
   const [roastIndex, setRoastIndex] = useState(0)
+  const [termsChecked, setTermsChecked] = useState(TERMS.map(() => false))
   const [quizStep, setQuizStep] = useState(0)
   const [quizResponse, setQuizResponse] = useState(null)
   const [clickCount, setClickCount] = useState(0)
   const [typingDone, setTypingDone] = useState(false)
   const [visiblePromises, setVisiblePromises] = useState(0)
+  const [rating, setRating] = useState(0)
+  const [ratingHover, setRatingHover] = useState(0)
+  const [ratingSubmitted, setRatingSubmitted] = useState(false)
 
+  // Floating emojis
   useEffect(() => {
     const interval = setInterval(() => {
       setEmojis((prev) => [
@@ -142,12 +174,22 @@ function App() {
     return () => clearInterval(interval)
   }, [])
 
-  // Stagger promises appearing
+  // Fake loading screen cycle
+  useEffect(() => {
+    if (screen !== 'loading') return
+    if (loadingMsg < LOADING_MSGS.length - 1) {
+      const timer = setTimeout(() => setLoadingMsg((m) => m + 1), 1200)
+      return () => clearTimeout(timer)
+    } else {
+      const timer = setTimeout(() => setLoadingDone(true), 1200)
+      return () => clearTimeout(timer)
+    }
+  }, [screen, loadingMsg])
+
+  // Stagger promises
   useEffect(() => {
     if (screen === 'promises' && visiblePromises < PROMISES.length) {
-      const timer = setTimeout(() => {
-        setVisiblePromises((v) => v + 1)
-      }, 400)
+      const timer = setTimeout(() => setVisiblePromises((v) => v + 1), 400)
       return () => clearTimeout(timer)
     }
   }, [screen, visiblePromises])
@@ -156,9 +198,15 @@ function App() {
     if (roastIndex < ROASTS.length - 1) {
       setRoastIndex((i) => i + 1)
     } else {
-      setScreen('quiz')
+      setScreen('terms')
     }
   }
+
+  const toggleTerm = (i) => {
+    setTermsChecked((prev) => prev.map((v, idx) => (idx === i ? !v : v)))
+  }
+
+  const allTermsChecked = termsChecked.every(Boolean)
 
   const handleQuizAnswer = (optionIndex) => {
     const current = QUIZ[quizStep]
@@ -177,8 +225,11 @@ function App() {
     }, 2000)
   }
 
-  const handleEmojiButton = () => {
-    setClickCount((c) => c + 1)
+  const handleEmojiButton = () => setClickCount((c) => c + 1)
+
+  const handleRating = (stars) => {
+    setRating(stars)
+    setRatingSubmitted(true)
   }
 
   return (
@@ -196,6 +247,33 @@ function App() {
           }}
         />
       ))}
+
+      {/* ── SCREEN 0: Fake Loading ── */}
+      {screen === 'loading' && (
+        <div className="screen fade-in">
+          <div className="big-emoji spin">⏳</div>
+          <h1 className="title" style={{ fontSize: 'clamp(1.1rem, 4vw, 1.6rem)' }}>
+            {LOADING_MSGS[loadingMsg]}
+          </h1>
+          <div className="loading-bar">
+            <div
+              className="loading-fill"
+              style={{
+                width: `${((loadingMsg + 1) / LOADING_MSGS.length) * 100}%`,
+              }}
+            />
+          </div>
+          {loadingDone && (
+            <button
+              className="main-btn fade-in"
+              style={{ marginTop: '24px' }}
+              onClick={() => setScreen('intro')}
+            >
+              I'm ready 😤
+            </button>
+          )}
+        </div>
+      )}
 
       {/* ── SCREEN 1: Intro with Typewriter ── */}
       {screen === 'intro' && (
@@ -245,12 +323,48 @@ function App() {
         </div>
       )}
 
+      {/* ── SCREEN 2.5: Terms & Conditions ── */}
+      {screen === 'terms' && (
+        <div className="screen fade-in">
+          <div className="big-emoji bounce">📜</div>
+          <h1 className="title quiz-title">Terms & Conditions</h1>
+          <p className="subtitle-small">
+            Before we proceed, some legal stuff (not really) 🧑‍⚖️
+          </p>
+          <div className="terms-card pop-in">
+            {TERMS.map((term, i) => (
+              <label key={i} className="term-row" onClick={() => toggleTerm(i)}>
+                <span className={`term-check ${termsChecked[i] ? 'checked' : ''}`}>
+                  {termsChecked[i] ? '✓' : ''}
+                </span>
+                <span className="term-text">{term}</span>
+              </label>
+            ))}
+          </div>
+          {allTermsChecked ? (
+            <button
+              className="main-btn fade-in"
+              style={{ marginTop: '16px' }}
+              onClick={() => setScreen('quiz')}
+            >
+              I agree to everything 🤝
+            </button>
+          ) : (
+            <p className="subtitle-small" style={{ marginTop: '16px', marginBottom: 0 }}>
+              Check all boxes to continue 👆
+            </p>
+          )}
+        </div>
+      )}
+
       {/* ── SCREEN 3: Quiz ── */}
       {screen === 'quiz' && (
         <div className="screen fade-in">
           <div className="big-emoji bounce">🧠</div>
           <h1 className="title quiz-title">Quick Quiz</h1>
-          <p className="subtitle-small">Let's see if you still know me</p>
+          <p className="subtitle-small">
+            Question {quizStep + 1} of {QUIZ.length} — no cheating 👀
+          </p>
 
           <div className="quiz-card pop-in" key={quizStep}>
             <p className="quiz-question">{QUIZ[quizStep].q}</p>
@@ -262,6 +376,9 @@ function App() {
                     className="quiz-btn"
                     onClick={() => handleQuizAnswer(idx)}
                   >
+                    <span className="quiz-letter">
+                      {String.fromCharCode(65 + idx)}
+                    </span>
                     {opt.text}
                   </button>
                 ))}
@@ -290,6 +407,9 @@ function App() {
           <ConfettiBurst />
           <div className="big-emoji spin">🎊</div>
           <h1 className="title celebration">Okay but for real now...</h1>
+          <p className="subtitle-small" style={{ marginTop: '8px' }}>
+            (the dramatic music would start here if I had the budget) 🎻
+          </p>
         </div>
       )}
 
@@ -333,25 +453,32 @@ function App() {
           <h2 className="name">Nicole</h2>
           <div className="divider">✦ 🤍 ✦</div>
           <p className="message">
-            I know things are different now, and honestly? That's okay.
-            Some things don't need a label to matter.
+            Look, I'm not gonna lie — I made you scroll through 
+            roasts, a fake loading screen, a terms & conditions page, 
+            AND a quiz just to get here. That should tell you 
+            something about how much I care 😂
           </p>
           <p className="message">
-            You helped me grow into a better person, 
-            and I hope you know that didn't expire 
-            when we changed our relationship status.
+            Things changed between us, and that's okay. 
+            But some things? Some things are permanent. 
+            Like my bad jokes. And the fact that I'll always 
+            show up for you — whether you want me to or not 
+            (spoiler: you don't get a choice) 🫡
           </p>
           <p className="message highlight">
-            So here's your annual reminder: I'm always just a text away.
-            For the good days, the bad days, the 2am overthinking,
-            or when you just need someone to send you memes. 
-            No awkwardness, no strings — just someone who genuinely 
-            cares about you. Always. 🤝
+            So here's the deal: I'm basically like a subscription 
+            you never signed up for but can't cancel. 
+            3am meltdowns? I'm there. Bad day? I got you. 
+            Need someone to argue with? Sir, I was BORN for that. 
+            Need food? Already on the way. 
+            You're stuck with me, Nicole. Forever. No refunds 🧾🤝
           </p>
           <p className="message love-note">
             And just so we're clear — you are loved. 
-            Not in a weird way. Not in a "let's make it awkward" way.
-            In a "you matter to me and that's never going away" way. 
+            Not in a "let's make it weird" way. 
+            In a "you could literally move to Antarctica 
+            and I'd still find a way to send you memes" way. 
+            It's not going away. I'm not going away. 
             Deal with it 😤💛
           </p>
           <div className="emoji-row">
@@ -386,9 +513,44 @@ function App() {
               ? `${clickCount} hugs?! Chill 😭`
               : clickCount < 15
               ? "At this point just call me 📞"
-              : "You broke the hug counter 💀"}
+              : clickCount < 20
+              ? "You broke the hug counter 💀"
+              : clickCount < 25
+              ? "I'm running out of responses 🫠"
+              : "NICOLE STOP 😂😂😂"}
             {clickCount > 0 && ` (${clickCount})`}
           </button>
+
+          {/* Rate this experience */}
+          <div className="rating-section fade-in">
+            <p className="rating-label">Rate this experience ⭐</p>
+            <div className="star-row">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <span
+                  key={s}
+                  className={`star ${s <= (ratingHover || rating) ? 'active' : ''}`}
+                  onMouseEnter={() => !ratingSubmitted && setRatingHover(s)}
+                  onMouseLeave={() => !ratingSubmitted && setRatingHover(0)}
+                  onClick={() => !ratingSubmitted && handleRating(s)}
+                >
+                  {s <= (ratingHover || rating) ? '⭐' : '☆'}
+                </span>
+              ))}
+            </div>
+            {ratingSubmitted && (
+              <p className="rating-response pop-in">
+                {rating === 5
+                  ? "Taste. Elegance. Sophistication. 👨‍🍳💋"
+                  : rating === 4
+                  ? "I'll take it. Aiming for 5 next year 📈"
+                  : rating === 3
+                  ? "Mid?! I poured my HEART into this 😭"
+                  : rating === 2
+                  ? "Two stars?! This is a hate crime 💔"
+                  : "One star?! Blocked. Unfriended. Deported 🚨"}
+              </p>
+            )}
+          </div>
 
           {/* Scrolling ticker */}
           <div className="ticker-wrapper">

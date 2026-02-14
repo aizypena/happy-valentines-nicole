@@ -240,24 +240,52 @@
   font-family: 'Quicksand', sans-serif;
   font-size: clamp(0.85rem, 2.5vw, 1rem);
   font-weight: 500;
-  padding: 12px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 14px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   color: rgba(230, 210, 220, 0.85);
   cursor: pointer;
   transition: all 0.25s ease;
   text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.quiz-btn:hover {
-  background: rgba(200, 122, 146, 0.18);
-  border-color: rgba(200, 122, 146, 0.4);
-  transform: translateX(6px);
+.quiz-btn .quiz-letter {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(0.75rem, 2vw, 0.85rem);
+  font-weight: 600;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(200, 122, 146, 0.15);
+  color: #d4899e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+/* Only apply hover on devices that truly support it */
+@media (hover: hover) and (pointer: fine) {
+  .quiz-btn:hover {
+    background: rgba(200, 122, 146, 0.15);
+    border-color: rgba(200, 122, 146, 0.35);
+    transform: translateX(6px);
+  }
+  .quiz-btn:hover .quiz-letter {
+    background: rgba(200, 122, 146, 0.3);
+    color: #e8c8d4;
+  }
 }
 
 .quiz-btn:active {
   transform: scale(0.97);
+  background: rgba(200, 122, 146, 0.2);
 }
 
 .quiz-response {
@@ -405,6 +433,136 @@
   font-size: clamp(0.75rem, 2vw, 0.9rem);
   color: rgba(210, 170, 185, 0.4);
   font-style: italic;
+}
+
+/* ─── Loading Bar ─── */
+.loading-bar {
+  width: 100%;
+  max-width: 300px;
+  height: 6px;
+  background: rgba(200, 140, 160, 0.12);
+  border-radius: 10px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.loading-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c87a92, #d4899e, #e8a0b0);
+  border-radius: 10px;
+  transition: width 0.8s ease;
+}
+
+/* ─── Terms & Conditions ─── */
+.terms-card {
+  background: rgba(200, 140, 160, 0.08);
+  border: 1px solid rgba(200, 140, 160, 0.15);
+  border-radius: 20px;
+  padding: clamp(16px, 4vw, 24px);
+  margin: 16px 0 12px;
+  max-width: 420px;
+  width: 100%;
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.term-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .term-row:hover {
+    background: rgba(200, 122, 146, 0.08);
+  }
+}
+
+.term-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  border: 2px solid rgba(200, 140, 160, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: transparent;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.term-check.checked {
+  background: rgba(200, 122, 146, 0.25);
+  border-color: #c87a92;
+  color: #e8c8d4;
+  transform: scale(1.1);
+}
+
+.term-text {
+  font-family: 'Quicksand', sans-serif;
+  font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+  color: rgba(230, 210, 220, 0.8);
+  font-weight: 400;
+  text-align: left;
+  line-height: 1.4;
+}
+
+/* ─── Star Rating ─── */
+.rating-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+.rating-label {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  color: rgba(210, 170, 185, 0.5);
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.star-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.star {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.star.active {
+  transform: scale(1.15);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .star:hover {
+    transform: scale(1.3);
+  }
+}
+
+.rating-response {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  color: #dcc090;
+  font-weight: 400;
+  margin-top: 10px;
 }
 
 /* ─── Typewriter Cursor ─── */
