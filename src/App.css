@@ -1,0 +1,470 @@
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* ─── Valentine Container ─── */
+.valentine-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+/* ─── Floating Emojis ─── */
+.floating-emoji {
+  position: fixed;
+  bottom: -40px;
+  animation: floatUp linear forwards;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0;
+  }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.3; }
+  100% {
+    transform: translateY(-110vh) rotate(360deg) scale(0.4);
+    opacity: 0;
+  }
+}
+
+/* ─── Screens ─── */
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 2;
+  padding: 2rem 1.5rem;
+  max-width: 560px;
+  width: 100%;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ─── Big Emoji ─── */
+.big-emoji {
+  font-size: clamp(50px, 12vw, 80px);
+  margin-bottom: 16px;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+}
+
+.wobble {
+  animation: wobble 2s ease-in-out infinite;
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+.bounce {
+  animation: bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.spin {
+  animation: spinIn 1.5s ease-out;
+}
+
+@keyframes spinIn {
+  from { transform: rotate(0deg) scale(0); opacity: 0; }
+  to { transform: rotate(720deg) scale(1); opacity: 1; }
+}
+
+.gentle-float {
+  animation: gentleFloat 3s ease-in-out infinite;
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* ─── Title ─── */
+.title {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(1.6rem, 7vw, 3.5rem);
+  font-weight: 600;
+  color: #e8c8d4;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.title.celebration {
+  font-size: clamp(1.5rem, 6vw, 3rem);
+  background: linear-gradient(135deg, #e8a0b0, #d4788e, #eab8c4, #c87090);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.title.card-title {
+  color: #dbb0c0;
+}
+
+.title.quiz-title {
+  color: #e0c0cc;
+}
+
+.subtitle {
+  font-family: 'Quicksand', sans-serif;
+  font-size: clamp(0.95rem, 3vw, 1.3rem);
+  color: rgba(228, 200, 210, 0.85);
+  margin-bottom: 8px;
+  font-weight: 400;
+}
+
+.subtitle-small {
+  font-family: 'Quicksand', sans-serif;
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
+  color: rgba(210, 180, 195, 0.55);
+  margin-bottom: 28px;
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* ─── Name ─── */
+.name {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(2.2rem, 9vw, 4.5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, #d4899e, #e0a8b8, #ecc8d4, #c87a92);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s ease-in-out infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ─── Roast Card ─── */
+.roast-card {
+  background: rgba(200, 140, 160, 0.08);
+  border: 1px solid rgba(200, 140, 160, 0.15);
+  border-radius: 20px;
+  padding: clamp(20px, 5vw, 32px);
+  margin: 16px 0 20px;
+  max-width: 400px;
+  width: 100%;
+  backdrop-filter: blur(8px);
+}
+
+.roast-text {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(1rem, 3.5vw, 1.25rem);
+  color: #e8d0a0;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.roast-progress {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(200, 150, 165, 0.2);
+  transition: all 0.3s ease;
+}
+
+.progress-dot.active {
+  background: #c87a92;
+  box-shadow: 0 0 8px rgba(200, 122, 146, 0.4);
+}
+
+/* ─── Quiz ─── */
+.quiz-card {
+  background: rgba(200, 140, 160, 0.08);
+  border: 1px solid rgba(200, 140, 160, 0.15);
+  border-radius: 20px;
+  padding: clamp(20px, 5vw, 28px);
+  margin: 16px 0 20px;
+  max-width: 420px;
+  width: 100%;
+  backdrop-filter: blur(8px);
+}
+
+.quiz-question {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(1.05rem, 3.5vw, 1.3rem);
+  color: #e0c8d0;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quiz-btn {
+  font-family: 'Quicksand', sans-serif;
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  font-weight: 500;
+  padding: 12px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(230, 210, 220, 0.85);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: left;
+}
+
+.quiz-btn:hover {
+  background: rgba(200, 122, 146, 0.18);
+  border-color: rgba(200, 122, 146, 0.4);
+  transform: translateX(6px);
+}
+
+.quiz-btn:active {
+  transform: scale(0.97);
+}
+
+.quiz-response {
+  text-align: center;
+}
+
+.quiz-response p {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(1rem, 3vw, 1.15rem);
+  color: #dcc090;
+  font-weight: 500;
+}
+
+.pop-in {
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ─── Buttons ─── */
+.main-btn {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(14px, 3.5vw, 18px);
+  font-weight: 500;
+  padding: 14px 32px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  background: linear-gradient(135deg, #c87a92, #a8506e);
+  color: white;
+  box-shadow: 0 4px 15px rgba(168, 80, 110, 0.3);
+}
+
+.main-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.main-btn:active {
+  transform: scale(0.97);
+}
+
+.emoji-btn {
+  margin-top: 28px;
+  background: linear-gradient(135deg, #d4a060, #b86e60) !important;
+  box-shadow: 0 4px 15px rgba(180, 110, 96, 0.25) !important;
+  font-size: clamp(13px, 3vw, 16px) !important;
+  padding: 12px 24px !important;
+}
+
+.emoji-btn:active {
+  animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px) rotate(-2deg); }
+  40% { transform: translateX(6px) rotate(2deg); }
+  60% { transform: translateX(-4px) rotate(-1deg); }
+  80% { transform: translateX(4px) rotate(1deg); }
+}
+
+/* ─── Card Content ─── */
+.card-content {
+  max-width: 520px;
+}
+
+.divider {
+  font-size: 16px;
+  color: rgba(210, 160, 175, 0.4);
+  letter-spacing: 12px;
+  margin: 16px 0;
+}
+
+.message {
+  font-family: 'Quicksand', sans-serif;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  color: rgba(235, 215, 225, 0.85);
+  line-height: 1.85;
+  margin-bottom: 14px;
+  font-weight: 300;
+}
+
+.message.highlight {
+  color: rgba(235, 220, 228, 0.9);
+  background: rgba(200, 140, 160, 0.07);
+  border-radius: 16px;
+  padding: clamp(12px, 3vw, 16px) clamp(14px, 4vw, 20px);
+  border: 1px solid rgba(200, 140, 160, 0.1);
+  font-weight: 400;
+}
+
+.message.love-note {
+  font-family: 'Fredoka', sans-serif;
+  color: #e0c898;
+  background: linear-gradient(135deg, rgba(224, 200, 152, 0.08), rgba(200, 170, 120, 0.05));
+  border-radius: 16px;
+  padding: clamp(12px, 3vw, 16px) clamp(14px, 4vw, 20px);
+  border: 1px solid rgba(224, 200, 152, 0.12);
+  font-weight: 400;
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+  line-height: 1.8;
+  margin-top: 6px;
+}
+
+.emoji-row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(10px, 3vw, 16px);
+  font-size: clamp(22px, 5vw, 28px);
+  margin: 24px 0;
+}
+
+.emoji-row span {
+  animation: bounce 1.5s ease-in-out infinite;
+}
+
+.emoji-row span:nth-child(1) { animation-delay: 0s; }
+.emoji-row span:nth-child(2) { animation-delay: 0.12s; }
+.emoji-row span:nth-child(3) { animation-delay: 0.24s; }
+.emoji-row span:nth-child(4) { animation-delay: 0.36s; }
+.emoji-row span:nth-child(5) { animation-delay: 0.48s; }
+
+.signature {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+  font-weight: 500;
+  color: rgba(210, 160, 180, 0.7);
+  margin-top: 12px;
+}
+
+.footer-note {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-note p {
+  font-family: 'Quicksand', sans-serif;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+  color: rgba(210, 170, 185, 0.4);
+  font-style: italic;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 480px) {
+  .valentine-container {
+    padding: 0.5rem;
+  }
+  .screen {
+    padding: 1.5rem 1rem;
+  }
+  .card-content {
+    padding: 1.25rem 1rem;
+  }
+  .roast-card, .quiz-card {
+    margin: 12px 0 16px;
+  }
+  .main-btn {
+    padding: 12px 24px;
+  }
+}
+
+@media (max-width: 360px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  .name {
+    font-size: 2rem;
+  }
+  .big-emoji {
+    font-size: 45px;
+  }
+  .main-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 768px) {
+  .screen {
+    padding: 3rem;
+  }
+  .card-content {
+    background: rgba(200, 140, 160, 0.05);
+    border-radius: 24px;
+    border: 1px solid rgba(200, 140, 160, 0.08);
+    backdrop-filter: blur(10px);
+    padding: 3rem;
+  }
+}
+
+@media (min-height: 800px) {
+  .valentine-container {
+    min-height: 100vh;
+  }
+}
+
+/* ─── Safe area for notched phones ─── */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .valentine-container {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
+  }
+}
